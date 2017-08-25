@@ -24,7 +24,6 @@ static NSString *image_url = @"http://images.apple.com/v/apple-watch-series-1/e/
 - (void)viewDidLoad {
    
     [super viewDidLoad];
-    
     [self layoutUI];
 
 }
