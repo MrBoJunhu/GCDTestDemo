@@ -16,6 +16,14 @@
 
 #import "GCDViewController.h"
 
+#import "NSLockViewController.h"
+
+#import "SynchronizedViewController.h"
+
+#import "GCDSemaphoreViewController.h"
+
+#import "NSConditionViewController.h"
+
 @interface BasicViewController ()
 
 
@@ -82,6 +90,45 @@
             [self addChildViewController:gcdVC];
             
             [self.view addSubview:gcdVC.view];
+            
+        }
+            break;
+        case 4:
+        {
+            NSLockViewController *lockVC = [[NSLockViewController alloc] init];
+            
+            [self addChildViewController:lockVC];
+            
+            [self.view addSubview:lockVC.view];
+            
+        }
+            break;
+        case 5:{
+            
+            SynchronizedViewController *synchronizedVC = [[SynchronizedViewController alloc] init];
+            
+            [self addChildViewController:synchronizedVC];
+            
+            [self.view addSubview:synchronizedVC.view];
+            
+        }
+            break;
+        case 6:{
+            
+            GCDSemaphoreViewController *GCDSemaphoreVC = [[GCDSemaphoreViewController alloc] init];
+            
+            [self addChildViewController:GCDSemaphoreVC];
+            
+            [self.view addSubview:GCDSemaphoreVC.view];
+            
+        }
+            break;
+
+        case 7: {
+            NSConditionViewController *nsconditionVC = [[NSConditionViewController alloc] init];
+            [self addChildViewController:nsconditionVC];
+            
+            [self.view addSubview:nsconditionVC.view];
             
         }
             break;

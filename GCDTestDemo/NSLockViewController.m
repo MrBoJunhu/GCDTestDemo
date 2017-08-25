@@ -1,24 +1,28 @@
 //
-//  GCDViewController.m
+//  NSLockViewController.m
 //  GCDTestDemo
 //
-//  Created by BillBo on 2017/8/24.
+//  Created by BillBo on 2017/8/25.
 //  Copyright © 2017年 BillBo. All rights reserved.
 //
 
-#import "GCDViewController.h"
+#import "NSLockViewController.h"
 
 #import "BImageData.h"
 
-@interface GCDViewController ()
+@interface NSLockViewController (){
+    NSLock *_lock;
+}
 
 @property (nonatomic, strong) NSMutableArray *imagesArray;
 
 @property (nonatomic, strong) NSMutableArray *showImagesArray;
 
+
 @end
 
-@implementation GCDViewController
+@implementation NSLockViewController
+
 
 - (NSMutableArray *)showImagesArray{
     
@@ -42,19 +46,32 @@
 }
 
 
+/*
+ 拿图片加载来举例，假设现在有9张图片，但是有15个线程都准备加载这9张图片，约定不能重复加载同一张图片，这样就形成了一个资源抢夺的情况。在下面的程序中将创建9张图片，每次读取照片链接时首先判断当前链接数是否大于1，用完一个则立即移除，最多只有9个
+ */
 - (void)viewDidLoad {
-   
+    
     [super viewDidLoad];
+   
+    //线程锁初始化
+    _lock = [[NSLock alloc] init];
+    
+    [self resetImages];
+    
+    [self layoutUI];
+
+}
+
+- (void)resetImages {
     
     for (NSUInteger i = 1; i < 10; i ++) {
         
         NSString *urlString = [NSString stringWithFormat:@"http://images.apple.com/v/apple-watch-series-1/e/images/gallery/connected_gallery_%ld_fallback_large_2x.png",i];
         
         [self.imagesArray addObject:urlString];
+
     }
-    
-    [self layoutUI];
-    
+
 }
 
 
@@ -66,8 +83,10 @@
     
     CGFloat image_Height = image_Width;
     
-    NSUInteger section =  self.imagesArray.count/3;
-    
+//    NSUInteger section =  self.imagesArray.count/3;
+
+    NSUInteger section =  4;
+
     UIScrollView *scv = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 50)];
     
     scv.contentSize = CGSizeMake(scv.bounds.size.width,(image_Height + space) * section + space);
@@ -108,9 +127,9 @@
     
     loadBtn.frame = CGRectMake(0, self.view.frame.size.height - button_Hight, button_Width, button_Hight);
     
-    [loadBtn addTarget:self action:@selector(loadImageWithMultiThread:) forControlEvents:UIControlEventTouchUpInside];
+    [loadBtn addTarget:self action:@selector(loadImageWithNSLock:) forControlEvents:UIControlEventTouchUpInside];
     
-    [loadBtn setTitle:@"串行serial加载" forState:UIControlStateNormal];
+    [loadBtn setTitle:@"NSLock加载" forState:UIControlStateNormal];
     
     loadBtn.backgroundColor = [UIColor cyanColor];
     
@@ -125,70 +144,24 @@
     
     cancelLoadBtn.frame = CGRectMake(self.view.frame.size.width - button_Width, self.view.frame.size.height - button_Hight, button_Width, button_Hight);
     
-    [cancelLoadBtn addTarget:self action:@selector(dispatch_asyncLoad:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [cancelLoadBtn setTitle:@"并行globalQueue加载" forState:UIControlStateNormal];
-    
-    cancelLoadBtn.backgroundColor = [UIColor cyanColor];
-    
-    [cancelLoadBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    
-    [cancelLoadBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    
-    [self.view addSubview:cancelLoadBtn];
-
-    
-}
-#pragma mark - 串行加载
-
-- (void)loadImageWithMultiThread:(UIButton *)sender {
-    
-    sender.userInteractionEnabled = NO;
-    
-    
-    [self clearImages];
-   
-    NSUInteger imageCount = self.imagesArray.count;
-    
-    //串行队列(DISPATCH_QUEUE_SERIAL )
-    /*创建一个串行队列
-     第一个参数：队列名称
-     第二个参数：队列类型
-     */
-    dispatch_queue_t serialQueue = dispatch_queue_create("myThread", DISPATCH_QUEUE_SERIAL);
-    
-    for (NSUInteger i = 0; i < imageCount ; i++) {
-        
-        //异步执行队列任务
-        dispatch_async(serialQueue, ^{
-           
-            [self loadImage:i];
-            
-        });
-    }
-    
-    sender.userInteractionEnabled = YES;
-    
 }
 
-#pragma mark - 并行加载
+#pragma mark - 线程锁并发加载图片
 
-- (void)dispatch_asyncLoad:(UIButton *)sender {
+- (void)loadImageWithNSLock:(UIButton *)sender {
     
     sender.userInteractionEnabled = NO;
+  
+    [self resetImages];
     
     [self clearImages];
     
-    NSUInteger imageCount = self.imagesArray.count;
-   
-    //并行队列
-    /*取得全局队列
-     第一个参数：线程优先级
-     第二个参数：标记参数，目前没有用，一般传入0
-     */
+    NSUInteger imageCount = self.showImagesArray.count;
+
+    // imageView 数量大于 9
     dispatch_queue_t globalQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     
-    for (NSUInteger i = 0; i < imageCount; i ++) {
+    for (NSUInteger i = 0; i < imageCount; i++) {
         
         dispatch_async(globalQueue, ^{
            
@@ -198,46 +171,49 @@
     }
     
     sender.userInteractionEnabled = YES;
-
+    
 }
-
 
 #pragma mark - 请求数据
 
-- (NSData *)requestImageData:(NSUInteger)index {
+- (NSData *)requestData:(NSUInteger)index {
     
     @autoreleasepool {
         
-        NSURL *url = [NSURL URLWithString:self.imagesArray[index]];
+        NSString *urlString;
         
-        NSData *data = [NSData dataWithContentsOfURL:url];
+        NSData *data;
+        //加锁
+        [_lock lock];
         
+        if (self.imagesArray.count > 0 ) {
+       
+            //如果还有图片未加载
+            urlString = self.imagesArray.lastObject;
+            
+            [self.imagesArray removeObject:urlString];
+        }
+        
+        //使用完解锁
+        [_lock unlock];
+        
+        if (urlString) {
+            
+            NSURL *url = [NSURL URLWithString:urlString];
+            
+            data = [NSData dataWithContentsOfURL:url];
+
+        }
+
         return data;
         
     }
     
 }
 
-
-#pragma mark - 刷新UI
-
-- (void)updateImage:(BImageData *)data {
-   
-    UIImageView *imageView = self.showImagesArray[data.index.integerValue];
-    
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    
-    dispatch_async(queue, ^{
-       
-        imageView.image = [UIImage imageWithData:data.data];
-        
-    });
-    
-}
-
 - (void)loadImage:(NSUInteger)index {
     
-    NSData *data = [self requestImageData:index];
+    NSData *data = [self requestData:index];
     
     BImageData *imageData = [[BImageData alloc] init];
     
@@ -246,6 +222,23 @@
     imageData.index = [NSNumber numberWithInteger:index];
     
     [self updateImage:imageData];
+    
+}
+
+
+#pragma mark - 显示图片
+
+- (void)updateImage:(BImageData *)imageData {
+    
+    UIImageView *imageV = self.showImagesArray[imageData.index.integerValue];
+    
+    UIImage *image = [UIImage imageWithData:imageData.data];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+       
+        imageV.image = image;
+        
+    });
     
 }
 
@@ -261,6 +254,7 @@
     }
     
 }
+
 
 
 @end

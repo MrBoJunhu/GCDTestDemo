@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A541735E1F4FAE340040135D /* NSLockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A541735D1F4FAE340040135D /* NSLockViewController.m */; };
+		A54173611F4FB6BC0040135D /* SynchronizedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54173601F4FB6BC0040135D /* SynchronizedViewController.m */; };
+		A54173641F4FCB450040135D /* GCDSemaphoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54173631F4FCB450040135D /* GCDSemaphoreViewController.m */; };
+		A541736A1F4FCF8F0040135D /* NSConditionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54173691F4FCF8F0040135D /* NSConditionViewController.m */; };
 		A56689601F4EA6BE00289E07 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A566895F1F4EA6BE00289E07 /* main.m */; };
 		A56689631F4EA6BE00289E07 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A56689621F4EA6BE00289E07 /* AppDelegate.m */; };
 		A56689691F4EA6BE00289E07 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A56689671F4EA6BE00289E07 /* Main.storyboard */; };
@@ -41,6 +45,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A541735C1F4FAE340040135D /* NSLockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLockViewController.h; sourceTree = "<group>"; };
+		A541735D1F4FAE340040135D /* NSLockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLockViewController.m; sourceTree = "<group>"; };
+		A541735F1F4FB6BC0040135D /* SynchronizedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronizedViewController.h; sourceTree = "<group>"; };
+		A54173601F4FB6BC0040135D /* SynchronizedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronizedViewController.m; sourceTree = "<group>"; };
+		A54173621F4FCB450040135D /* GCDSemaphoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDSemaphoreViewController.h; sourceTree = "<group>"; };
+		A54173631F4FCB450040135D /* GCDSemaphoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDSemaphoreViewController.m; sourceTree = "<group>"; };
+		A54173681F4FCF8F0040135D /* NSConditionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSConditionViewController.h; sourceTree = "<group>"; };
+		A54173691F4FCF8F0040135D /* NSConditionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSConditionViewController.m; sourceTree = "<group>"; };
 		A566895B1F4EA6BE00289E07 /* GCDTestDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GCDTestDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A566895F1F4EA6BE00289E07 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A56689611F4EA6BE00289E07 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -135,6 +147,14 @@
 				A5EC4E8A1F4EB7B500640DE1 /* NSOperationViewController.m */,
 				A5EC4E951F4ED7C400640DE1 /* GCDViewController.h */,
 				A5EC4E961F4ED7C400640DE1 /* GCDViewController.m */,
+				A541735C1F4FAE340040135D /* NSLockViewController.h */,
+				A541735D1F4FAE340040135D /* NSLockViewController.m */,
+				A541735F1F4FB6BC0040135D /* SynchronizedViewController.h */,
+				A54173601F4FB6BC0040135D /* SynchronizedViewController.m */,
+				A54173621F4FCB450040135D /* GCDSemaphoreViewController.h */,
+				A54173631F4FCB450040135D /* GCDSemaphoreViewController.m */,
+				A54173681F4FCF8F0040135D /* NSConditionViewController.h */,
+				A54173691F4FCF8F0040135D /* NSConditionViewController.m */,
 				A56689671F4EA6BE00289E07 /* Main.storyboard */,
 				A566896A1F4EA6BE00289E07 /* Assets.xcassets */,
 				A566896C1F4EA6BE00289E07 /* LaunchScreen.storyboard */,
@@ -309,11 +329,15 @@
 				A5EC4E821F4EA8EB00640DE1 /* HomepageTableViewController.m in Sources */,
 				A5EC4E971F4ED7C400640DE1 /* GCDViewController.m in Sources */,
 				A56689631F4EA6BE00289E07 /* AppDelegate.m in Sources */,
+				A54173611F4FB6BC0040135D /* SynchronizedViewController.m in Sources */,
+				A54173641F4FCB450040135D /* GCDSemaphoreViewController.m in Sources */,
 				A5EC4E881F4EB72600640DE1 /* ThreadViewController.m in Sources */,
+				A541736A1F4FCF8F0040135D /* NSConditionViewController.m in Sources */,
 				A5EC4E851F4EA9E400640DE1 /* BasicViewController.m in Sources */,
 				A5EC4E8E1F4EBB1600640DE1 /* BImageData.m in Sources */,
 				A56689601F4EA6BE00289E07 /* main.m in Sources */,
 				A5EC4E8B1F4EB7B500640DE1 /* NSOperationViewController.m in Sources */,
+				A541735E1F4FAE340040135D /* NSLockViewController.m in Sources */,
 				A5EC4E941F4ECCFC00640DE1 /* ThreadMoreViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

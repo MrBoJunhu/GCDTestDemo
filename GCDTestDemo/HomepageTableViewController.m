@@ -24,7 +24,7 @@
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
-    self.titleArray = @[@"NSThread",@"MoreNSThread",@"NSOperation",@"GCD"];
+    self.titleArray = @[@"NSThread",@"MoreNSThread",@"NSOperation",@"GCD",@"NSLock",@"@synchronized",@"GCDSemaphore",@"NSCondition控制线程通信"];
     
 }
 

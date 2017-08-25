@@ -10,13 +10,21 @@
 
 typedef NS_ENUM(NSUInteger, ThreadType) {
     
-    NSThread_ThreadType = 0,
+    NSThread_ThreadType = 0, //开辟线程加载
     
-    MoreNSThread_ThreadType,
+    MoreNSThread_ThreadType, //多线程
     
-    NSOperation_ThreadType,
+    NSOperation_ThreadType, //Operation多线程加载,线程依赖
     
-    GCD_ThreadType
+    GCD_ThreadType, //GCD 串行 并行加载
+    
+    NSLock_ThreadType, //NSLock线程锁
+    
+    Synchronized_TyreadType, //@synchronized 代码块
+    
+    GCDSemaphore_ThreadType,//GCD信号量控制线程锁
+   
+    NSCondition_ThreadType, //NSCondition控制线程通信
     
 };
 

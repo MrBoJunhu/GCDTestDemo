@@ -47,15 +47,11 @@
     
     [super viewDidLoad];
     
-    for (NSUInteger j = 0; j < 5; j++) {
+    for (NSUInteger i = 1; i < 10; i ++) {
         
-        for (NSUInteger i = 1; i < 10; i ++) {
-            
-            NSString *urlString = [NSString stringWithFormat:@"http://images.apple.com/v/apple-watch-series-1/e/images/gallery/connected_gallery_%ld_fallback_large_2x.png",i];
-            
-            [self.imagesArray addObject:urlString];
-        }
+        NSString *urlString = [NSString stringWithFormat:@"http://images.apple.com/v/apple-watch-series-1/e/images/gallery/connected_gallery_%ld_fallback_large_2x.png",i];
         
+        [self.imagesArray addObject:urlString];
     }
     
     [self layoutUI];
